@@ -1,0 +1,14 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+@WebServlet("/CountVisits")
+public class CountVisitsServlet extends HttpServlet {
+    private int count = 0;
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
+        count++;
+        resp.setContentType("text/html");
+        resp.getWriter().println("<h1>Page visits: " + count + "</h1>");
+    }
+}

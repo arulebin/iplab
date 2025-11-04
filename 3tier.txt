@@ -1,0 +1,54 @@
+1. Database Table: marks
+CREATE TABLE marks (
+    regno VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(50),
+    marks INT
+);
+INSERT INTO marks VALUES
+('S101', 'Alice', 85),
+('S102', 'Bob', 76);
+2. index.jsp
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Exam - Mark List</title>
+</head>
+<body>
+    <h2>Enter Register Number</h2>
+    <form action="MarkServlet" method="post">
+        Register No: <input type="text" name="regno" required />
+        <input type="submit" value="Get Marks"/>
+    </form>
+</body>
+</html>
+MarkServlet.java
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+public class MarkServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String regno = request.getParameter("regno");
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/yourdbname", "root", "password");
+            ResultSet rs = con.createStatement();
+            rs.executeQuery(
+    "SELECT name, mark FROM marks WHERE regno='" + regno + "'");            
+            if(rs.next()) {
+                out.println("<h1>Mark List</h1>");
+                out.println("<p>Name: " + rs.getString("name") + "</p>");
+                out.println("<p>Marks: " + rs.getInt("mark") + "</p>");
+            } else {
+                out.println("<p>No record found for Register No: " + regno + "</p>");
+            }
+            rs.close();
+            con.close();
+        } catch(Exception e) {
+            out.println("Error: " + e.getMessage());
+        }
+        out.println("<br/><a href='index.jsp'>Back</a>");
+    }
+}

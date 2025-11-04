@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <script>
+    function validate() {
+      var f = document.myForm;
+      var name = f.Name.value.trim();
+      var email = f.EMail.value.trim();
+      if (!name) {
+        alert("Please provide your name!");
+        return false;
+      }
+      if (!email) {
+        alert("Email must be filled out");
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        alert("Email is not valid");
+        return false;
+      }
+      alert(`Name: ${name}\nEmail: ${email}`);
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <h2 style="text-align:center; color:red">User Input Validation</h2>
+  <form name="myForm" onsubmit="return validate()" style="max-width: 300px; margin: auto;">
+    <div>
+      <label for="Name">Name:</label><br />
+      <input type="text" name="Name" id="Name" style="width: 100%;" />
+    </div><br />
+    <div>
+      <label for="EMail">Email:</label><br />
+      <input type="text" name="EMail" id="EMail" style="width: 100%;" />
+    </div><br />
+    <div>
+      <input type="submit" value="Submit" style="width: 100%; background:green; color:#fff;"/>
+    </div>
+  </form>
+</body>
+</html>

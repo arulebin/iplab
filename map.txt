@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Political Map Hotspots</title>
+  <style>
+     .hotspot {
+  position: absolute;
+  width: 20px; height: 20px;
+  background: blue; border-radius: 50%;
+  opacity: 0.5; cursor: pointer;
+}
+#info {
+  margin-top: 20px;
+  font-size: 1.2em;
+  border: 1px solid #000;
+  padding: 10px;
+  width: 300px;
+}
+  </style>
+</head>
+<body>
+  <h1>India Political Map</h1>
+  <div id="map">
+    <img src="image.png" alt="India Political Map">
+   
+<div class="hotspot" style="top: 130px; left: 160px;" onclick="showInfo('Ladakh','northernmost')"></div>
+<div class="hotspot" style="top: 230px; left: 365px;"
+ onclick="showInfo('Arunachal Pradesh','easternmost')"></div>
+<div class="hotspot" style="top: 500px; left: 150px;" 
+onclick="showInfo('Tamil Nadu','southernmost')"></div>
+<div class="hotspot" style="top: 300px; left: 60px;" onclick="showInfo('Gujarat','westernmost')"></div>
+
+  </div>
+  <div id="info">Click on a hotspot to see more information.</div>
+  <script>
+    function showInfo(state, description) {
+      document.getElementById("info").innerText = state + ": " + description + " state of India.";
+    }
+  </script>
+</body>
+</html>

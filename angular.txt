@@ -1,0 +1,32 @@
+server.js
+const express = require('express');
+const app = express();
+app.get('/items', (req, res) => {
+  res.json(['Apple', 'Banana', 'Cherry']);
+});
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+Run with: node server.js
+index.html
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <title> Example</title>
+</head>
+<body ng-controller="MainCtrl">
+  <h2>Fruit List</h2>
+  <ul>
+    <li ng-repeat="fruit in fruits">{{fruit}}</li>
+  </ul>
+  <script>
+    function MainCtrl($scope, $http) {
+      $http.get('http://localhost:3000/items')
+        .then(response => {
+          $scope.fruits = response.data;
+        });
+    }
+  </script>
+</body>
+</html>

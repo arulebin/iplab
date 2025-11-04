@@ -1,0 +1,77 @@
+<?php
+// --- Step 1: Connect to Database ---
+$servername = "localhost";
+$username = "root";   // default username in XAMPP
+$password = "";       // no password by default
+$dbname = "studentdb";
+
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// --- Step 2: Insert Record ---
+if (isset($_POST['add'])) {
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $email = $_POST['email'];
+
+    $sql = "INSERT INTO students (name, age, email) VALUES ('$name', '$age', '$email')";
+    mysqli_query($conn, $sql);
+}
+
+// --- Step 3: Delete Record ---
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    mysqli_query($conn, "DELETE FROM students WHERE id=$id");
+}
+
+// --- Step 4: Retrieve All Records ---
+$result = mysqli_query($conn, "SELECT * FROM students");
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Database Management System</title>
+</head>
+<body>
+    <h2>Student Database Management System</h2>
+
+    <!-- Form to Add Student -->
+    <form method="post" action="">
+        <label>Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label>Age:</label>
+        <input type="number" name="age" required><br><br>
+
+        <label>Email:</label>
+        <input type="email" name="email"><br><br>
+
+        <input type="submit" name="add" value="Add Student">
+    </form>
+
+    <h3>Student List</h3>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>ID</th><th>Name</th><th>Age</th><th>Email</th><th>Action</th>
+        </tr>
+
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <tr>
+            <td><?php echo $row['id']; ?></td>
+            <td><?php echo htmlspecialchars($row['name']); ?></td>
+            <td><?php echo $row['age']; ?></td>
+            <td><?php echo htmlspecialchars($row['email']); ?></td>
+            <td><a href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Delete this record?');">Delete</a></td>
+        </tr>
+        <?php } ?>
+    </table>
+
+</body>
+</html>
+
+<?php mysqli_close($conn); ?>

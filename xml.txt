@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="sports.xsl"?>
+<sports>
+  <sport>
+    <name>Football</name>
+    <players>11</players>
+    <origin>England</origin>
+  </sport>
+  <sport>
+    <name>Basketball</name>
+    <players>5</players>
+    <origin>USA</origin>
+  </sport>
+  <sport>
+    <name>Tennis</name>
+    <players>1 or 2</players>
+    <origin>France</origin>
+  </sport>
+</sports>
+XSLT File (sports.xsl)
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    <html>
+      <body>
+        <h2>Sports List</h2>
+        <table border="1" cellpadding="5">
+          <tr bgcolor="#d3d3d3">
+            <th>Name</th>
+            <th>Number of Players</th>
+            <th>Origin</th>
+          </tr>
+          <xsl:for-each select="sports/sport">
+            <tr>
+              <td><xsl:value-of select="name" /></td>
+              <td><xsl:value-of select="players" /></td>
+              <td><xsl:value-of select="origin" /></td>
+            </tr>
+          </xsl:for-each>
+        </table>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>
