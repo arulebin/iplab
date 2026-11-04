@@ -1,0 +1,1033 @@
+# Experiment 1: GUI Components, Fonts and Colours
+
+Aim: To develop an Android application using GUI components, fonts and colours.
+
+Components used: TextView, EditText, Button.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#2196F3"/>
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"/>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:backgroundTint="#4CAF50"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="#E91E63"/>
+
+</LinearLayout>
+```
+
+### 2. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    EditText name;
+    Button btn;
+    TextView result;
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        name = findViewById(R.id.name);
+        btn = findViewById(R.id.btn);
+        result = findViewById(R.id.result);
+
+        btn.setOnClickListener(v -> {
+            String s = name.getText().toString();
+
+            result.setText("Hello " + s);
+        });
+    }
+}
+```
+
+Output: The application displays a welcome message, accepts a name and displays the entered name in a coloured text.
+
+# Experiment 2: Layout Managers and Event Listeners
+
+Aim: To develop an Android application using layout managers and event listeners.
+
+Components used: LinearLayout, TextView, Button, OnClickListener.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click the Button"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click Me"/>
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"/>
+
+</LinearLayout>
+```
+
+### 2. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    TextView txt;
+    Button btn1, btn2;
+    int count = 0;
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        txt = findViewById(R.id.txt);
+        btn1 = findViewById(R.id.btn1);
+        btn2 = findViewById(R.id.btn2);
+
+        btn1.setOnClickListener(v -> {
+            count++;
+            txt.setText("Button Clicked: " + count);
+        });
+
+        btn2.setOnClickListener(v -> {
+            count = 0;
+            txt.setText("Click the Button");
+        });
+    }
+}
+```
+
+Output: Clicking the button increases the count. Clicking Reset sets the count to zero.
+
+# Experiment 3: Drawing Basic Graphical Primitives
+
+Aim: To write an Android application that draws basic graphical primitives on the screen.
+
+Graphics used: Line, Circle, Rectangle and Text.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.myapplication.MyView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+```
+
+### 2. MyView\.java
+
+Create a new Java class named `MyView`.
+
+```
+package com.example.myapplication;
+
+import android.content.Context;
+import android.view.View;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Color;
+
+public class MyView extends View {
+
+    Paint p = new Paint();
+
+    public MyView(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected void onDraw(Canvas c) {
+        super.onDraw(c);
+
+        p.setColor(Color.RED);
+        p.setStrokeWidth(8);
+        c.drawLine(50, 50, 300, 50, p);
+
+        p.setColor(Color.BLUE);
+        c.drawCircle(150, 180, 60, p);
+
+        p.setColor(Color.GREEN);
+        c.drawRect(50, 280, 250, 400, p);
+
+        p.setColor(Color.BLACK);
+        p.setTextSize(40);
+        c.drawText("Hello Android", 50, 480, p);
+    }
+}
+```
+
+Output: The screen displays a red line, blue circle, green rectangle and text.
+
+Note: No additional permissions are required.
+
+# Experiment 4: To-Do List Database and Content Provider
+
+Aim: To create a To-Do List application using SQLite Database and Content Provider.
+
+Concepts used:
+
+- SQLite Database
+- Content Provider
+- ContentResolver
+- Insert and Display Records
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your task"/>
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Task"/>
+
+    <Button
+        android:id="@+id/show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Tasks"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
+</LinearLayout>
+```
+
+### 2. DBHelper.java
+
+```
+package com.example.myapplication;
+
+import android.database.sqlite.*;
+import android.content.Context;
+
+public class DBHelper extends SQLiteOpenHelper {
+
+    public DBHelper(Context c) {
+        super(c, "TodoDB", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(
+            "CREATE TABLE tasks " +
+            "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "task TEXT)"
+        );
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db,
+                          int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS tasks");
+        onCreate(db);
+    }
+}
+```
+
+### 3. TodoProvider.java
+
+```
+package com.example.myapplication;
+
+import android.content.*;
+import android.database.*;
+import android.database.sqlite.*;
+
+public class TodoProvider extends ContentProvider {
+
+    DBHelper helper;
+
+    public static final String AUTHORITY =
+            "com.example.myapplication.provider";
+
+    public static final String URL =
+            "content://" + AUTHORITY + "/tasks";
+
+    @Override
+    public boolean onCreate() {
+        helper = new DBHelper(getContext());
+        return true;
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        long id = db.insert("tasks", null, values);
+
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+    @Override
+    public Cursor query(Uri uri, String[] projection,
+                        String selection, String[] args,
+                        String sortOrder) {
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        return db.query("tasks", projection, selection,
+                args, null, null, sortOrder);
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] args) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        return db.delete("tasks", selection, args);
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values,
+                      String selection, String[] args) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        return db.update("tasks", values, selection, args);
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        return "vnd.android.cursor.dir/vnd.example.tasks";
+    }
+}
+```
+
+### 4. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.content.*;
+import android.database.Cursor;
+import android.net.Uri;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    EditText task;
+    TextView result;
+
+    Uri uri = Uri.parse(TodoProvider.URL);
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        task = findViewById(R.id.task);
+        result = findViewById(R.id.result);
+
+        Button add = findViewById(R.id.add);
+        Button show = findViewById(R.id.show);
+
+        add.setOnClickListener(v -> {
+            ContentValues values = new ContentValues();
+
+            values.put("task",
+                    task.getText().toString());
+
+            getContentResolver().insert(uri, values);
+
+            task.setText("");
+            Toast.makeText(this, "Task Added",
+                    Toast.LENGTH_SHORT).show();
+        });
+
+        show.setOnClickListener(v -> {
+            Cursor c = getContentResolver().query(
+                    uri, null, null, null, null);
+
+            StringBuilder data = new StringBuilder();
+
+            if (c != null) {
+                while (c.moveToNext()) {
+                    data.append(c.getString(
+                            c.getColumnIndexOrThrow("task")))
+                            .append("\n");
+                }
+                c.close();
+            }
+
+            result.setText(data.toString());
+        });
+    }
+}
+```
+
+### 5. AndroidManifest.xml
+
+Add the following provider inside the application tag:
+
+```
+<provider
+    android:name=".TodoProvider"
+    android:authorities="com.example.myapplication.provider"
+    android:exported="false"/>
+```
+
+Output: Users can enter tasks, save them in the SQLite database and display the saved tasks using Content Provider.
+
+# Experiment 5: Notification Manager
+
+Aim: To develop an Android application using Notification Manager.
+
+Concepts used: NotificationManager, NotificationChannel and NotificationCompat.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/notify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Notification"/>
+
+</LinearLayout>
+```
+
+### 2. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.*;
+import android.os.Bundle;
+import android.widget.*;
+import android.content.pm.PackageManager;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
+public class MainActivity extends Activity {
+
+    String channelId = "my_channel";
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        createChannel();
+
+        Button btn = findViewById(R.id.notify);
+
+        btn.setOnClickListener(v -> {
+
+            if (android.os.Build.VERSION.SDK_INT >= 33 &&
+                ContextCompat.checkSelfPermission(this,
+                "android.permission.POST_NOTIFICATIONS")
+                != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(
+                    new String[]{
+                        "android.permission.POST_NOTIFICATIONS"
+                    }, 100);
+
+                return;
+            }
+
+            showNotification();
+        });
+    }
+
+    void createChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel channel =
+                new NotificationChannel(
+                    channelId,
+                    "My Notifications",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            NotificationManager nm =
+                getSystemService(NotificationManager.class);
+
+            nm.createNotificationChannel(channel);
+        }
+    }
+
+    void showNotification() {
+
+        NotificationCompat.Builder builder =
+            new NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Android Notification")
+            .setContentText("Your notification is working!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true);
+
+        NotificationManagerCompat.from(this)
+            .notify(1, builder.build());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions,
+            int[] grantResults) {
+
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);
+
+        if (requestCode == 100 &&
+            grantResults.length > 0 &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showNotification();
+        }
+    }
+}
+```
+
+### 3. AndroidManifest.xml
+
+Add this permission before the application tag:
+
+```
+<uses-permission
+    android:name="android.permission.POST_NOTIFICATIONS"/>
+```
+
+Required dependency: Add AndroidX Core to your app-level Gradle dependencies if it is not already present.
+
+```
+implementation 'androidx.core:core:1.15.0'
+```
+
+Output: Clicking the button displays a notification in the notification panel.
+
+# Experiment 6: Alert Upon Receiving a Message
+
+Aim: To implement an Android application that creates an alert upon receiving an SMS message.
+
+Concepts used: BroadcastReceiver, SMS_RECEIVED and Alert Dialog.
+
+### 1. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.*;
+import android.os.Bundle;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+
+        TextView t = new TextView(this);
+        t.setText("SMS Alert Application");
+        t.setTextSize(25);
+
+        setContentView(t);
+    }
+}
+```
+
+### 2. SmsReceiver.java
+
+Create a new Java class named `SmsReceiver`.
+
+```
+package com.example.myapplication;
+
+import android.content.*;
+import android.telephony.SmsMessage;
+import android.widget.Toast;
+
+public class SmsReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        Object[] data = (Object[])
+                intent.getExtras().get("pdus");
+
+        if (data != null) {
+            for (Object pdu : data) {
+
+                SmsMessage sms =
+                    SmsMessage.createFromPdu(
+                        (byte[]) pdu,
+                        intent.getStringExtra("format"));
+
+                String message = sms.getMessageBody();
+
+                Toast.makeText(context,
+                    "New Message: " + message,
+                    Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+}
+```
+
+### 3. AndroidManifest.xml
+
+Add the following permission and receiver:
+
+```
+<uses-permission
+    android:name="android.permission.RECEIVE_SMS"/>
+
+<application>
+
+    <receiver
+        android:name=".SmsReceiver"
+        android:exported="true">
+
+        <intent-filter>
+            <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+        </intent-filter>
+
+    </receiver>
+
+</application>
+```
+
+Important requirements:
+
+- Grant SMS permission at runtime before testing.
+- Use a physical Android device with SMS capability.
+- Test only with permission and a legitimate test message.
+- SMS reception may be restricted on some devices and Android versions.
+
+Output: When an SMS is received, the application displays an alert message using Toast.
+
+# Experiment 7: Creating, Setting and Cancelling Alarms
+
+Aim: To develop an Android application for creating, setting and cancelling alarms.
+
+Concepts used: AlarmManager, PendingIntent and BroadcastReceiver.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <Button
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Alarm"/>
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel Alarm"/>
+
+</LinearLayout>
+```
+
+### 2. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.*;
+import android.os.Bundle;
+import android.content.*;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        alarmManager =
+            (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+
+        pendingIntent = PendingIntent.getBroadcast(
+            this, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT |
+            PendingIntent.FLAG_IMMUTABLE);
+
+        Button set = findViewById(R.id.set);
+        Button cancel = findViewById(R.id.cancel);
+
+        set.setOnClickListener(v -> {
+
+            long time = System.currentTimeMillis()
+                    + 10000;
+
+            alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                time,
+                pendingIntent);
+
+            Toast.makeText(this,
+                "Alarm Set for 10 Seconds",
+                Toast.LENGTH_SHORT).show();
+        });
+
+        cancel.setOnClickListener(v -> {
+
+            alarmManager.cancel(pendingIntent);
+
+            Toast.makeText(this,
+                "Alarm Cancelled",
+                Toast.LENGTH_SHORT).show();
+        });
+    }
+}
+```
+
+### 3. AlarmReceiver.java
+
+```
+package com.example.myapplication;
+
+import android.content.*;
+import android.widget.Toast;
+
+public class AlarmReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        Toast.makeText(context,
+            "Alarm Time Reached!",
+            Toast.LENGTH_LONG).show();
+    }
+}
+```
+
+### 4. AndroidManifest.xml
+
+Add the receiver inside the application tag:
+
+```
+<receiver
+    android:name=".AlarmReceiver"
+    android:exported="false"/>
+```
+
+Output:
+
+- Set Alarm: Creates an alarm after 10 seconds.
+- Cancel Alarm: Cancels the scheduled alarm.
+- When the alarm triggers, a message is displayed.
+
+Note: This example uses `AlarmManager.set()` and does not require exact-alarm special access.
+
+# Experiment 8: GPS Location Information
+
+Aim: To develop a native Android application that uses GPS location information.
+
+Concepts used: LocationManager, GPS Provider and LocationListener.
+
+### 1. activity_main.xml
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <Button
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Location"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="20dp"/>
+
+</LinearLayout>
+```
+
+### 2. MainActivity.java
+
+```
+package com.example.myapplication;
+
+import android.app.*;
+import android.os.Bundle;
+import android.location.*;
+import android.content.pm.PackageManager;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+
+    LocationManager manager;
+    TextView result;
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        result = findViewById(R.id.result);
+        Button btn = findViewById(R.id.location);
+
+        manager = (LocationManager)
+                getSystemService(LOCATION_SERVICE);
+
+        btn.setOnClickListener(v -> {
+
+            if (checkSelfPermission(
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(
+                    new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    }, 100);
+
+                return;
+            }
+
+            getLocation();
+        });
+    }
+
+    void getLocation() {
+
+        try {
+
+            Location loc = manager.getLastKnownLocation(
+                    LocationManager.GPS_PROVIDER);
+
+            if (loc != null) {
+
+                double lat = loc.getLatitude();
+                double lon = loc.getLongitude();
+
+                result.setText(
+                    "Latitude: " + lat +
+                    "\nLongitude: " + lon);
+
+            } else {
+                result.setText(
+                    "Location not available. Try again outdoors.");
+            }
+
+        } catch (SecurityException e) {
+            result.setText("Location Permission Required");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions,
+            int[] grantResults) {
+
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);
+
+        if (requestCode == 100 &&
+            grantResults.length > 0 &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            getLocation();
+        }
+    }
+}
+```
+
+### 3. AndroidManifest.xml
+
+Add the permission before the application tag:
+
+```
+<uses-permission
+    android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+<uses-permission
+    android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+```
+
+Output: The application displays the latitude and longitude of the device.
+
+Note: Enable GPS and test on a physical device or an Android emulator with a simulated location. This example reads the last known GPS location, so it may not be immediately available.
+
+# Common AndroidManifest.xml Structure
+
+Every experiment should have its own Android Studio project. Your manifest will have a similar basic structure:
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Add required permissions here -->
+
+    <application
+        android:allowBackup="true"
+        android:label="My Application"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+        </activity>
+
+        <!-- Add additional receivers or providers here -->
+
+    </application>
+
+</manifest>
+```
+
+# Quick Revision for Practical Examination
+
+| No. | Experiment                               | Important Java Class / Concept           |
+| --- | ---------------------------------------- | ---------------------------------------- |
+| 1   | GUI Components, Fonts and Colours        | TextView, EditText, Button               |
+| 2   | Layout Managers and Event Listeners      | LinearLayout, OnClickListener            |
+| 3   | Graphical Primitives                     | Canvas, Paint, View                      |
+| 4   | To-Do List Database and Content Provider | SQLiteOpenHelper, ContentProvider        |
+| 5   | Notification Manager                     | NotificationManager, NotificationChannel |
+| 6   | Alert upon Receiving a Message           | BroadcastReceiver, SMS_RECEIVED          |
+| 7   | Creating, Setting and Cancelling Alarms  | AlarmManager, PendingIntent              |
+| 8   | GPS Location Information                 | LocationManager, Location                |
+
+## Important Viva Questions
+
+1. What is an Activity?\
+   An Activity represents a single screen in an Android application.
+2. What is XML?\
+   XML is used to design the user interface of Android applications.
+3. What is an Event Listener?\
+   It is used to handle user actions such as button clicks.
+4. What is Canvas?\
+   Canvas is used to draw graphical objects on the screen.
+5. What is SQLite?\
+   SQLite is a lightweight database used to store data locally.
+6. What is Content Provider?\
+   It is used to manage and share application data.
+7. What is Notification Manager?\
+   It manages and displays notifications.
+8. What is BroadcastReceiver?\
+   It receives and responds to broadcast messages from the Android system or applications.
+9. What is AlarmManager?\
+   It schedules operations to occur at a specified time.
+10. What is GPS?\
+    GPS stands for Global Positioning System. It helps determine the geographical location of a device.
+
+My suggestion for your practical preparation: First practise Experiments 1, 2, 3 and 5 because they have simpler implementations. Then practise 4, 6, 7 and 8, which require additional Android components and permissions.
+
+Important: Create each experiment as a separate project or replace the existing files carefully. Do not put all eight `MainActivity.java` programs into the same project because they have the same class name.
