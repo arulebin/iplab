@@ -555,86 +555,32 @@ Concepts used: BroadcastReceiver, SMS_RECEIVED and Alert Dialog.
 ### 1. MainActivity.java
 
 ```
-package com.example.myapplication;
+package com.example.alertapp;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle b) {
-        super.onCreate(b);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        TextView t = new TextView(this);
-        t.setText("SMS Alert Application");
-        t.setTextSize(25);
+        Button btn = new Button(this);
+        btn.setText("Click Me");
+        setContentView(btn);
 
-        setContentView(t);
+        btn.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                .setTitle("Alert")
+                .setMessage("Hello! Button clicked.")
+                .setPositiveButton("OK", null)
+                .show();
+        });
     }
 }
-```
-
-### 2. SmsReceiver.java
-
-Create a new Java class named `SmsReceiver`.
-
-```
-package com.example.myapplication;
-
-import android.content.*;
-import android.telephony.SmsMessage;
-import android.widget.Toast;
-
-public class SmsReceiver extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        Object[] data = (Object[])
-                intent.getExtras().get("pdus");
-
-        if (data != null) {
-            for (Object pdu : data) {
-
-                SmsMessage sms =
-                    SmsMessage.createFromPdu(
-                        (byte[]) pdu,
-                        intent.getStringExtra("format"));
-
-                String message = sms.getMessageBody();
-
-                Toast.makeText(context,
-                    "New Message: " + message,
-                    Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-}
-```
-
-### 3. AndroidManifest.xml
-
-Add the following permission and receiver:
-
-```
-<uses-permission
-    android:name="android.permission.RECEIVE_SMS"/>
-
-<application>
-
-    <receiver
-        android:name=".SmsReceiver"
-        android:exported="true">
-
-        <intent-filter>
-            <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-        </intent-filter>
-
-    </receiver>
-
-</application>
 ```
 
 Important requirements:
