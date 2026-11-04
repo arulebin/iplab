@@ -481,91 +481,50 @@ Concepts used: NotificationManager, NotificationChannel and NotificationCompat.
 ### 2. MainActivity.java
 
 ```
-package com.example.myapplication;
+package com.example.notificationapp;
 
 import android.app.*;
 import android.os.Bundle;
-import android.widget.*;
-import android.content.pm.PackageManager;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
+import android.content.*;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    String channelId = "my_channel";
+    Button btn;
 
     @Override
-    protected void onCreate(Bundle b) {
-        super.onCreate(b);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createChannel();
-
-        Button btn = findViewById(R.id.notify);
+        btn = findViewById(R.id.btnNotify);
 
         btn.setOnClickListener(v -> {
 
-            if (android.os.Build.VERSION.SDK_INT >= 33 &&
-                ContextCompat.checkSelfPermission(this,
-                "android.permission.POST_NOTIFICATIONS")
-                != PackageManager.PERMISSION_GRANTED) {
+            NotificationManager nm =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-                requestPermissions(
-                    new String[]{
-                        "android.permission.POST_NOTIFICATIONS"
-                    }, 100);
+            String channelId = "my_channel";
 
-                return;
-            }
-
-            showNotification();
-        });
-    }
-
-    void createChannel() {
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel =
-                new NotificationChannel(
-                    channelId,
+            if (android.os.Build.VERSION.SDK_INT >= 26) {
+                NotificationChannel channel =
+                    new NotificationChannel(channelId,
                     "My Notifications",
                     NotificationManager.IMPORTANCE_DEFAULT);
 
-            NotificationManager nm =
-                getSystemService(NotificationManager.class);
+                nm.createNotificationChannel(channel);
+            }
 
-            nm.createNotificationChannel(channel);
-        }
-    }
+            Notification notification =
+                new Notification.Builder(this, channelId)
+                .setContentTitle("Hello!")
+                .setContentText("This is my first notification")
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .build();
 
-    void showNotification() {
-
-        NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Android Notification")
-            .setContentText("Your notification is working!")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true);
-
-        NotificationManagerCompat.from(this)
-            .notify(1, builder.build());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, String[] permissions,
-            int[] grantResults) {
-
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);
-
-        if (requestCode == 100 &&
-            grantResults.length > 0 &&
-            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            showNotification();
-        }
+            nm.notify(1, notification);
+        });
     }
 }
 ```
